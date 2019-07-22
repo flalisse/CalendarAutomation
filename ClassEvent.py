@@ -40,16 +40,18 @@ class Event():
 
     print("+9h de décallage still working on it")
 
-    starttime_regex = "([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})-([0-9]{2}):([0-9]{2})"
+    starttime_regex = "([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2})"
 
     while re.search(starttime_regex, self.DateStart) is None:
       self.DateStart = input("Entrez une date pour votre tâche sous ce format (année-mois-jourT-heure:minutes:seconde-)")
 
 
 
+
   def SetDescription(self,):
 
     self.Description = input("Entrez une Description pour votre event {}".format(self.TaskSelected))
+    return self.Description
 
   def SetColor(self,):
 

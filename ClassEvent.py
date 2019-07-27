@@ -13,12 +13,13 @@ class Event():
     self.TupleOfTask = ["Rien a ajouter", "Sport", "Informatique", 'Loisirs']
     self.TaskSelected = ""
     self.Index = [0,1,2,3]
-    self.DateStart = ""
+    self.DateStartCompleted = ""
     self.Location = "Tbd"
     self.Description =""
     self.color =""
     self.occurencefixed=""
     self.Repeat=''
+    self.DateEndCompleted = ""
 
 
 
@@ -40,10 +41,65 @@ class Event():
 
     print("+9h de décallage still working on it")
 
-    starttime_regex = "([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2})"
+    starttime_regex = "([0-9]{4})-([0-9]{2})-([0-9]{2})-([0-9]{2}):([0-9]{2})"
+    DateNoComplete = ""
 
-    while re.search(starttime_regex, self.DateStart) is None:
-      self.DateStart = input("Entrez une date pour votre tâche sous ce format (année-mois-jourT-heure:minutes:seconde-)")
+    while re.search(starttime_regex,DateNoComplete) is None:
+        DateNoComplete = input("Entrez une date pour votre tâche sous ce format (année-mois-jour-heure:minute)")
+
+    DateNoComplete_tomodify = list(DateNoComplete)
+    Time_Zone = DateNoComplete[11:13]
+    Int_Good_Time_Zone = int(Time_Zone)+9
+
+    if Int_Good_Time_Zone > 24 :
+      Int_Good_Time_Zone_error_handle = Int_Good_Time_Zone-24
+      Int_Good_Time_Zone_error_handle_string = str(Int_Good_Time_Zone_error_handle)
+      DateNoComplete_tomodify[11]="0"
+      DateNoComplete_tomodify[12]=Int_Good_Time_Zone_error_handle_string
+      DateNoComplete_tomodify_string="".join(DateNoComplete_tomodify)
+      print(DateNoComplete_tomodify_string)
+
+    else:
+      Int_Good_Time_Zone_string = str(Int_Good_Time_Zone)
+      DateNoComplete_tomodify[11:13]=Int_Good_Time_Zone_string
+      DateNoComplete_tomodify_string = "".join(DateNoComplete_tomodify)
+      print(DateNoComplete_tomodify_string)
+
+
+    DateToGoodFormat = DateNoComplete_tomodify_string[:11]+'T'+DateNoComplete_tomodify_string[11:]
+    Additionnal_date = ':00-00:00'
+
+    self.DateStartCompleted = DateToGoodFormat + Additionnal_date
+    print(self.DateStartCompleted)
+
+
+    TimeForEvent = input("combien de temps pour cet event ? en heure ")
+    TimeForEvent_Int = int(TimeForEvent)
+
+    Timetoadd = DateNoComplete_tomodify_string[11:13]
+
+
+    real_time_to_end = int(Timetoadd) + TimeForEvent_Int
+    print(real_time_to_end)
+    real_time_to_end_string = str(real_time_to_end)
+
+
+    Date_To_End_List = list(DateNoComplete_tomodify_string)
+
+    if real_time_to_end < 11:
+      Date_To_End_List[11]="0"
+      Date_To_End_List[12]=real_time_to_end_string
+      Date_To_End_List_in_string = "".join(Date_To_End_List)
+
+    else :
+
+      Date_To_End_List[11:13] = real_time_to_end_string
+      Date_To_End_List_in_string = "".join(Date_To_End_List)
+
+    print(Date_To_End_List_in_string)
+    DateToEndGoodFormat = Date_To_End_List_in_string[:11]+'T'+Date_To_End_List_in_string[11:]
+    self.DateEndCompleted=DateToGoodFormat+Additionnal_date
+    print(self.DateEndCompleted)
 
 
 
@@ -89,3 +145,7 @@ class Event():
 
 
 
+
+Event = Event()
+
+Event.SetDate()
